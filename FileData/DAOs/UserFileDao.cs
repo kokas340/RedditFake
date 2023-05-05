@@ -14,10 +14,7 @@ public class UserFileDao : IUserDao
         this.context = context;
     }
 
-    public Task<IEnumerable<User>> GetAsync(SearchUserParametersDto searchParameters)
-    {
-        throw new NotImplementedException();
-    }
+  
 
     public Task<User> CreateAsync(User user)
     {

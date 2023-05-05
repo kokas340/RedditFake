@@ -5,7 +5,7 @@ public class PostCreationDto
     public int OwnerId { get; }
     public string Title { get; }
     
-    public String Description { get; }
+    public string Description { get; }
 
     public PostCreationDto(int ownerId, string title, string description)
     {

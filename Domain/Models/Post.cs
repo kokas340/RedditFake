@@ -6,7 +6,7 @@ public class Post
     public User Owner { get; private set;}
     public string Title { get; private set; }
 
-    public string Description { get; }
+    public string Description { get; private set; }
 
     public Post(User owner, string title, string description)
     {

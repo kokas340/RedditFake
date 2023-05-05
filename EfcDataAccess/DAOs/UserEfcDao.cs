@@ -30,10 +30,19 @@ public class UserEfcDao:IUserDao
         return existing;
     }
    
-    public Task<User?> GetAsync(UserLoginDto searchParameters)
+   public async Task<User> GetAsync(UserLoginDto dto)
+{
+    IQueryable<User> usersQuery = context.Users.AsQueryable();
+    if (dto.UserName != null && dto.Password != null)
     {
-        throw new NotImplementedException();
+        usersQuery = usersQuery.Where(u => 
+            u.UserName.ToLower().Contains(dto.UserName.ToLower()) &&
+            u.Password == dto.Password);
     }
+
+    User result = await usersQuery.SingleOrDefaultAsync();
+    return result;
+}
 
     public async Task<User?> GetByIdAsync(int id)
     {

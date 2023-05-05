@@ -13,7 +13,7 @@ public class PostFileDao : IPostDao
         this.context = context;
     }
 
-    public Task<Post> CreateAsync(Post todo)
+    public Task<Post> CreateAsync(Post post)
     {
         int id = 1;
         if (context.Posts.Any())
@@ -22,12 +22,12 @@ public class PostFileDao : IPostDao
             id++;
         }
 
-        todo.Id = id;
+        post.Id = id;
 
-        context.Posts.Add(todo);
+        context.Posts.Add(post);
         context.SaveChanges();
 
-        return Task.FromResult(todo);
+        return Task.FromResult(post);
     }
 
     public Task<IEnumerable<Post>> GetAsync(SearchPostParametersDto searchParams)

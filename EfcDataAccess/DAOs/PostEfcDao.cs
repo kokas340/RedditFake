@@ -21,9 +21,35 @@ public class PostEfcDao:IPostDao
         return added.Entity;
     }
 
-    public Task<IEnumerable<Post>> GetAsync(SearchPostParametersDto searchParameters)
+    public async Task<IEnumerable<Post>> GetAsync(SearchPostParametersDto searchParams)
     {
-        throw new NotImplementedException();
+        IQueryable<Post> query = context.Posts.Include(todo => todo.Owner).AsQueryable();
+    
+        if (!string.IsNullOrEmpty(searchParams.Username))
+        {
+            // we know username is unique, so just fetch the first
+            query = query.Where(todo =>
+                todo.Owner.UserName.ToLower().Equals(searchParams.Username.ToLower()));
+        }
+    
+        if (searchParams.UserId != null)
+        {
+            query = query.Where(t => t.Owner.Id == searchParams.UserId);
+        }
+    
+        if (searchParams.DescriptionContains != null)
+        {
+            query = query.Where(t => t.Description == searchParams.DescriptionContains);
+        }
+    
+        if (!string.IsNullOrEmpty(searchParams.TitleContains))
+        {
+            query = query.Where(t =>
+                t.Title.ToLower().Contains(searchParams.TitleContains.ToLower()));
+        }
+
+        List<Post> result = await query.ToListAsync();
+        return result;
     }
 
     public async Task UpdateAsync(Post todo)
