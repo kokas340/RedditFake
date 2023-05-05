@@ -1,0 +1,66 @@
+﻿@page "/ViewPost/{id:int}"
+@using Domain.Models
+@using HttpClients.ClientInterfaces
+@using UIComponents
+@using Domain.DTOs
+@using System.Security.Claims
+@inject IPostService postService
+@inject NavigationManager navMgr
+
+
+<h3>Post</h3>
+<table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Owner Name</th>
+           
+
+        </tr>
+        </thead>
+        <tbody>
+      
+        <tr>
+             <td>@item.Id</td>
+            <td>@item.OwnerName</td>
+         
+
+
+        </tr>
+        
+        </tbody>
+    </table>
+<h3>@item.Title</h3>
+<p>@item.Description</p>
+          
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; } = null!;
+    private  PostBasicDto item;
+    private string msg = "";
+    private bool isLoggedIn;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AuthenticationState authState = await AuthState;
+        ClaimsPrincipal user = authState.User;
+        isLoggedIn = user.Identity != null;
+        
+        if (!isLoggedIn) return;
+ 
+        try
+        {
+            item = await postService.GetByIdAsync(Id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+    }
+    
+   
+}

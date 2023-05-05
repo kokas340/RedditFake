@@ -1,0 +1,90 @@
+﻿@page "/EditPost/{id:int}"
+@using Domain.DTOs
+@using Domain.Models
+@using HttpClients.ClientInterfaces
+@using Microsoft.AspNetCore.Components
+@inject IPostService PostService
+@inject IUserService userService
+@inject NavigationManager navMgr
+@attribute [Authorize]
+
+<div class="card">
+    @if (users == null)
+    {
+        <label>Loading users...</label>
+    }
+    else if (!users.Any())
+    {
+        <label>No users, you cannot create a Post</label>
+    }
+    else if (dto == null)
+    {
+        <label>Loading Post data..</label>
+    }
+    else
+    {
+        <h3>Post Todo</h3>
+        <div class="form-group field">
+            <label>Title:</label>
+            <input type="text" @bind="dto.Title"/>
+        </div>
+        <div class="form-group field">
+            <label>Description:</label>
+            <input type="text" @bind="dto.Description"/>
+        </div>
+        <div class="button-row">
+            <button @onclick="UpdateAsync" class="acceptbtn">Update</button>
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(msg))
+    {
+        <label style="color: red">@msg</label>
+    }
+</div>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private PostUpdateDto dto = null!;
+    private string msg = "";
+    private IEnumerable<User>? users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        msg = "";
+        try
+        {
+            users = await userService.GetUsers();
+            PostBasicDto postData = await PostService.GetByIdAsync(Id);
+            User currentlyAssigned = users.First(user => user.UserName.Equals(postData.OwnerName));
+
+            dto = new(Id)
+            {
+                Description = postData.Description,
+                Title = postData.Title,
+                OwnerId = currentlyAssigned.Id
+            };
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+    }
+
+    private async Task UpdateAsync()
+    {
+        try
+        {
+            await PostService.UpdateAsync(dto);
+            navMgr.NavigateTo("/ViewPosts");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+    }
+}

@@ -1,0 +1,71 @@
+{
+  "Users": [
+    {
+      "Id": 1,
+      "UserName": "Hello121",
+      "Password": "Hello121"
+    },
+    {
+      "Id": 2,
+      "UserName": "FuLLeNN",
+      "Password": "FuLLeNN"
+    },
+    {
+      "Id": 3,
+      "UserName": "jack",
+      "Password": "jack"
+    },
+    {
+      "Id": 4,
+      "UserName": "jacky",
+      "Password": "jacky"
+    },
+    {
+      "Id": 5,
+      "UserName": "test44",
+      "Password": "test44"
+    },
+    {
+      "Id": 6,
+      "UserName": "jackk",
+      "Password": "jack"
+    },
+    {
+      "Id": 7,
+      "UserName": "jackyt",
+      "Password": "jack"
+    }
+  ],
+  "Posts": [
+    {
+      "Id": 1,
+      "Owner": {
+        "Id": 2,
+        "UserName": "FuLLeNN",
+        "Password": "FuLLeNN"
+      },
+      "Title": "First Reddit Post",
+      "Description": "My first Reddit Post"
+    },
+    {
+      "Id": 2,
+      "Owner": {
+        "Id": 1,
+        "UserName": "Hello121",
+        "Password": "Hello121"
+      },
+      "Title": "First Post in Fakeit",
+      "Description": "My Fakeit post"
+    },
+    {
+      "Id": 3,
+      "Owner": {
+        "Id": 6,
+        "UserName": "jackk",
+        "Password": "jack"
+      },
+      "Title": "jack",
+      "Description": "test123"
+    }
+  ]
+}
