@@ -49,9 +49,11 @@ public class UserEfcDao:IUserDao
         User? user = await context.Users.FindAsync(id);
         return user;
     }
-
-    public Task<List<User>> GetAllAsync()
+    public async Task<List<User>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        IQueryable<User> usersQuery = context.Users.AsQueryable();
+        List<User> result = await usersQuery.ToListAsync();
+        return result;
     }
+   
 }
